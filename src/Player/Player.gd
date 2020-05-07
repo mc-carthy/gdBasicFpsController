@@ -16,10 +16,12 @@ var rotation_helper
 
 var MOUSE_SENSITIVITY = 0.05
 
+var flashlight
 
 func _ready():
 	camera = $Rotation_Helper/Camera
 	rotation_helper = $Rotation_Helper
+	flashlight = $Rotation_Helper/Flashlight
 
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -66,6 +68,15 @@ func process_input(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	# ----------------------------------
+
+	# ----------------------------------
+	# Turning the flashlight on/off
+	if Input.is_action_just_pressed("flashlight"):
+		if flashlight.is_visible_in_tree():
+			flashlight.hide()
+		else:
+			flashlight.show()
 	# ----------------------------------
 
 func process_movement(delta):
