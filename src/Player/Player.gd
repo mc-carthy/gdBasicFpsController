@@ -16,6 +16,9 @@ var rotation_helper
 
 var MOUSE_SENSITIVITY = 0.05
 
+const MAX_SPRINT_SPEED = 30
+const SPRINT_ACCEL = 18
+var is_sprinting = false
 var flashlight
 
 func _ready():
@@ -78,6 +81,13 @@ func process_input(delta):
 		else:
 			flashlight.show()
 	# ----------------------------------
+	# ----------------------------------
+	# Sprinting
+	if Input.is_action_pressed("movement_sprint"):
+		is_sprinting = true
+	else:
+		is_sprinting = false
+	# ----------------------------------
 
 func process_movement(delta):
 	dir.y = 0
@@ -89,11 +99,17 @@ func process_movement(delta):
 	hvel.y = 0
 
 	var target = dir
-	target *= MAX_SPEED
+	if is_sprinting:
+		target *= MAX_SPRINT_SPEED
+	else:
+		target *= MAX_SPEED
 
 	var accel
 	if dir.dot(hvel) > 0:
-		accel = ACCEL
+		if is_sprinting:
+			accel = SPRINT_ACCEL
+		else:
+			accel = ACCEL
 	else:
 		accel = DEACCEL
 
